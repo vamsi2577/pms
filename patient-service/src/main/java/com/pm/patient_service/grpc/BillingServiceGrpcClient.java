@@ -16,7 +16,7 @@ public class BillingServiceGrpcClient {
 
     public BillingServiceGrpcClient(
             @Value("${billing.service.address:localhost}") String serverAddress,
-            @Value("${billing.service.grpc.port.9001}") int serverPort
+            @Value("${billing.service.grpc.port:9001}") int serverPort
     ){
         log.info("Connecting to billing service at {}:{}", serverAddress, serverPort);
 
@@ -27,6 +27,7 @@ public class BillingServiceGrpcClient {
     public BillingResponse createBillingAccount(String patientId,String name, String email){
         BillingRequest request = BillingRequest.newBuilder().setName(name).setEmail(email).setPatientId(patientId).build();
         BillingResponse response = blockingStub.createBillingAccount(request);
+        log.info("Create billing account response: {}", request);
         log.info("Create billing account response: {}", response);
         return response;
     }
